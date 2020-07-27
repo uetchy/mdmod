@@ -3,10 +3,13 @@
 import { cac } from 'cac';
 import epicfail, { fail } from 'epicfail';
 import { readFileSync, writeFileSync } from 'fs';
+import { join } from 'path';
 import { PluginManager } from './plugin';
 import { parseRules } from './rule';
 
 epicfail();
+
+const { version } = require(join('..', 'package.json'));
 
 async function transformMarkdown(filename: string, flags: any) {
   const { args } = flags;
@@ -62,7 +65,7 @@ cli
   .command('<filename>')
   .option('--args', 'Key-value pair: --args.<key> <value>')
   .action(transformMarkdown);
-cli.version('0.0.0');
+cli.version(version);
 cli.help();
 
 try {
