@@ -9,9 +9,9 @@ export interface Handler {
       document: string;
       all: string;
       content: string;
-      args: any;
+      constants: any;
     },
-    args?: any,
+    constants?: any,
   ): string;
 }
 

@@ -8,7 +8,7 @@
     "build:ts": "tsup src/cli.ts src/index.ts -d lib",
     "clean": "shx rm -rf lib",
     "dev": "yarn build:ts --watch",
-    "md": "mdmod README.md --args.version $(git describe --tags --match 'v*')",
+    "md": "mdmod README.md --define.version $(git describe --tags --match 'v*')",
     "prepublishOnly": "yarn clean && yarn build",
     "test": "yarn build && jest"
   },

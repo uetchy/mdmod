@@ -12,7 +12,7 @@ epicfail();
 const { version } = require(join('..', 'package.json'));
 
 async function transformMarkdown(filename: string, flags: any) {
-  const { args } = flags;
+  const { define } = flags;
 
   // plugin discovery
   const pluginManager = await new PluginManager().discovery();
@@ -21,7 +21,7 @@ async function transformMarkdown(filename: string, flags: any) {
   const newMd = md.replace(
     /<!-- START mdmod ([\w\W]+?) -->\n([\w\W]*?)\n?<!-- END mdmod -->\n/gm,
     (all, ruleString, content) => {
-      const rules = parseRules(ruleString, args);
+      const rules = parseRules(ruleString, define);
 
       // apply rules
       for (const rule of rules) {
@@ -29,7 +29,7 @@ async function transformMarkdown(filename: string, flags: any) {
           // plugin
           const plugin = pluginManager.find(rule.use);
           if (plugin) {
-            content = plugin({ document: md, all, content, args });
+            content = plugin({ document: md, all, content, constants: define });
           }
         } else if (rule.replace) {
           // find and replace
@@ -42,7 +42,7 @@ async function transformMarkdown(filename: string, flags: any) {
               fail(
                 err.message +
                   '\n' +
-                  `Did you forget to add "--args.<key> <value>" ?`,
+                  `Did you forget to add "--define.<key> <value>" ?`,
                 {
                   soft: true,
                 },
@@ -63,7 +63,7 @@ async function transformMarkdown(filename: string, flags: any) {
 const cli = cac();
 cli
   .command('<filename>')
-  .option('--args', 'Key-value pair: --args.<key> <value>')
+  .option('--define.* <value>', 'Define constants in replace function')
   .action(transformMarkdown);
 cli.version(version);
 cli.help();

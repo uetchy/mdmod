@@ -6,9 +6,9 @@ export interface Rule {
   use?: string;
 }
 
-export function parseRules(ruleString: string, args: object): Rule[] {
+export function parseRules(ruleString: string, sandbox: object): Rule[] {
   const vm = new NodeVM({
-    sandbox: args,
+    sandbox,
     console: 'off',
     eval: false,
     require: true,
