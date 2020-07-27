@@ -17,31 +17,57 @@ yarn add mdmod
 
 ## Use
 
-### Sync version
+### Replace string
 
 ```bash
-mdmod README.md -e version v6.0.0
+mdmod README.md --args.newVersion v6.0.0
 ```
 
-<!-- START mdmod {replace: () => version} -->
-
-version string here
-
+```
+<!-- START mdmod {replace: () => newVersion} -->
+v5.0.2
 <!-- END mdmod -->
+```
 
+```
 <!-- START mdmod [
-  {match: /wooops/,      replace: () => 'curl'},
-  {match: /v\d\.\d\.\d/, replace: () => version}
+  {match: /https?/,      replace: () => useHttps ? 'https': 'http'},
+  {match: /v\d\.\d\.\d/, replace: () => newVersion}
 ] -->
 
+curl https://path/to/releases/v5.0.2.tar.gz
+tar -zxvf v5.0.2.tar.gz
+
+<!-- END mdmod -->
 ```
-wooops v0.0.0
+
+### Table of contents
+
+```bash
+npm i -g mdmod mdmod-plugin-toc
+mdmod README.md
 ```
+
+```
+<!-- START mdmod ({use: 'toc'}) -->
+
+
+- [mdmod](#mdmod)
+  - [Install](#install)
+  - [Use](#use)
+    - [Replace string](#replace-string)
+    - [Table of contents](#table-of-contents)
 
 <!-- END mdmod -->
 
-<!-- START mdmod ({use: 'top'}) -->
+<!-- START mdmod ({use: 'mdmod-plugin-toc'}) -->
 
-v2.0.0
+
+- [mdmod](#mdmod)
+  - [Install](#install)
+  - [Use](#use)
+    - [Replace string](#replace-string)
+    - [Table of contents](#table-of-contents)
 
 <!-- END mdmod -->
+```
