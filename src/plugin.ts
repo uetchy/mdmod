@@ -1,11 +1,8 @@
-// local node_modules/mdmod-plugin-*
-// global node_modules/mdmod-plugin-*
-
 import findUp from 'find-up';
 import { readFileSync } from 'fs';
 import globby from 'globby';
 import { join } from 'path';
-import { log } from './util';
+import { log, MDMOD_ROOT } from './util';
 
 export interface Handler {
   (
@@ -43,7 +40,7 @@ export class PluginManager {
     log('dirname', __dirname);
     const nodeModules = await findUp('node_modules', {
       type: 'directory',
-      cwd: __dirname,
+      cwd: join(MDMOD_ROOT, '..'),
     });
     log('nodeModules', nodeModules);
     if (!nodeModules) return this;
@@ -51,7 +48,7 @@ export class PluginManager {
     const dirs = await globby(join(nodeModules, 'mdmod-plugin-*'), {
       onlyDirectories: true,
     });
-    log('dirs', 'dirs');
+    log('dirs', dirs);
     const plugins = dirs.map<Plugin>((dir: string) => {
       const { name } = readPkg(join(dir, 'package.json'));
       return {
