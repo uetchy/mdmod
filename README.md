@@ -1,8 +1,9 @@
-<h1 align="center">mdmod</h1>
-<p align="center">In-place string replacement for Markdown</p>
+# mdmod
 
 [![npm-version]][npm-url]
 [![npm-downloads]][npm-url]
+
+> In-place string replacement for Markdown
 
 [npm-version]: https://badgen.net/npm/v/mdmod
 [npm-downloads]: https://badgen.net/npm/dt/mdmod
