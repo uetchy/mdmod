@@ -39,7 +39,10 @@ export class PluginManager {
   }
 
   async discovery() {
-    const nodeModules = await findUp('node_modules', { type: 'directory' });
+    const nodeModules = await findUp('node_modules', {
+      type: 'directory',
+      cwd: __dirname,
+    });
     if (!nodeModules) return this;
 
     const dirs = await globby(join(nodeModules, 'mdmod-plugin-*'), {
