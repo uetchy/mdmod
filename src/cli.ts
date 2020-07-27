@@ -29,7 +29,7 @@ async function transformMarkdown(filename: string, flags: any) {
           // plugin
           const plugin = pluginManager.find(rule.use);
           if (plugin) {
-            content = plugin.handler({ document: md, all, content, args });
+            content = plugin({ document: md, all, content, args });
           }
         } else if (rule.replace) {
           // find and replace

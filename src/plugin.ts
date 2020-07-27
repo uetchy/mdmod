@@ -1,8 +1,7 @@
-import findUp from 'find-up';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import globby from 'globby';
-import { join } from 'path';
-import { log, MDMOD_ROOT } from './util';
+import { join, resolve, sep } from 'path';
+import { log } from './util';
 
 export interface Handler {
   (
@@ -18,7 +17,7 @@ export interface Handler {
 
 export interface Plugin {
   name: string;
-  handler: Handler;
+  handler: () => Handler;
 }
 
 function readPkg(pkgPath: string): any {
@@ -29,6 +28,25 @@ function stripPrefix(name: string): string {
   return name.replace(/^mdmod-plugin-/, '');
 }
 
+function applyUp(dir: string, fn: any) {
+  const dirs = resolve(dir).split(sep);
+  const res = [];
+  while (dirs.length > 1) {
+    const target = dirs.join(sep);
+    const rv = fn(target);
+    if (rv) res.push(rv);
+    dirs.splice(-1);
+  }
+  return res;
+}
+
+function collectUp(dir: string, name: string) {
+  return applyUp(dir, (path: string) => {
+    const target = join(path, name);
+    return existsSync(target) ? target : undefined;
+  });
+}
+
 export class PluginManager {
   private plugins: Plugin[];
 
@@ -37,34 +55,40 @@ export class PluginManager {
   }
 
   async discovery() {
+    const searchPaths = collectUp(__dirname, 'node_modules');
+    log('search', searchPaths);
     log('dirname', __dirname);
-    const nodeModules = await findUp('node_modules', {
-      type: 'directory',
-      cwd: join(MDMOD_ROOT, '..'),
-    });
-    log('nodeModules', nodeModules);
-    if (!nodeModules) return this;
+    if (searchPaths.length <= 0) {
+      return this;
+    }
 
-    const dirs = await globby(join(nodeModules, 'mdmod-plugin-*'), {
-      onlyDirectories: true,
-    });
-    log('dirs', dirs);
-    const plugins = dirs.map<Plugin>((dir: string) => {
+    let pluginDirs: string[] = [];
+    for (const searchPath of searchPaths) {
+      const res = await globby(join(searchPath, 'mdmod-plugin-*'), {
+        onlyDirectories: true,
+      });
+      pluginDirs = [...res, ...pluginDirs];
+    }
+    log('pluginDirs', pluginDirs);
+
+    const plugins = pluginDirs.map<Plugin>((dir: string) => {
       const { name } = readPkg(join(dir, 'package.json'));
       return {
         name,
-        handler: require(dir),
+        handler: () => require(dir),
       };
     });
-    log('plugins', plugins);
     this.plugins = plugins;
+    log('plugins', plugins);
 
     return this;
   }
 
-  find(name: string): Plugin | undefined {
-    return this.plugins.find(
-      (plugin) => plugin.name === name || stripPrefix(plugin.name) === name,
-    );
+  find(name: string): Handler | undefined {
+    return this.plugins
+      .find(
+        (plugin) => plugin.name === name || stripPrefix(plugin.name) === name,
+      )
+      ?.handler();
   }
 }
