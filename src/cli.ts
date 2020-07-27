@@ -60,7 +60,7 @@ async function transformMarkdown(filename: string, flags: any) {
 const cli = cac();
 cli
   .command('<filename>')
-  .option('--args <value>', 'Key-value pair')
+  .option('--args', 'Key-value pair: --args.<key> <value>')
   .action(transformMarkdown);
 cli.version('0.0.0');
 cli.help();
