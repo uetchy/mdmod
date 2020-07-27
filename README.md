@@ -1,5 +1,5 @@
 <h1 align="center">mdmod</h1>
-<p align="center">Universal Markdown replacer</p>
+<p align="center">Universal Markdown replacement</p>
 
 [![npm-version]][npm-url]
 [![npm-downloads]][npm-url]
@@ -8,31 +8,37 @@
 [npm-downloads]: https://badgen.net/npm/dt/mdmod
 [npm-url]: https://npmjs.org/package/mdmod
 
+## Features
+
+- Replace strings
+- Create Table of Contents ([mdmod-plugin-toc](https://github.com/mdmod-plugin-toc)).
+
 ## Install
 
 ```bash
-yarn add mdmod
-# or npm i mdmod
+npm i -g mdmod
+# or `npm i mdmod` to install mdmod locally
 ```
 
 ## Use
 
-### Replace string
+### Replace strings
 
 ```bash
-mdmod README.md --args.newVersion v6.0.0
+mdmod README.md --args.version v6.0.0
 ```
 
-```
-<!-- START mdmod {replace: () => newVersion} -->
+```md
+<!-- START mdmod {replace: () => version} -->
+
 v5.0.2
+
 <!-- END mdmod -->
 ```
 
-```
+```md
 <!-- START mdmod [
-  {match: /https?/,      replace: () => useHttps ? 'https': 'http'},
-  {match: /v\d\.\d\.\d/, replace: () => newVersion}
+  {match: /v\d\.\d\.\d/, replace: () => version}
 ] -->
 
 curl https://path/to/releases/v5.0.2.tar.gz
@@ -44,13 +50,12 @@ tar -zxvf v5.0.2.tar.gz
 ### Table of contents
 
 ```bash
-npm i -g mdmod mdmod-plugin-toc
+npm i -g mdmod-plugin-toc
 mdmod README.md
 ```
 
-```
+```md
 <!-- START mdmod ({use: 'toc'}) -->
-
 
 - [mdmod](#mdmod)
   - [Install](#install)
@@ -61,7 +66,6 @@ mdmod README.md
 <!-- END mdmod -->
 
 <!-- START mdmod ({use: 'mdmod-plugin-toc'}) -->
-
 
 - [mdmod](#mdmod)
   - [Install](#install)
