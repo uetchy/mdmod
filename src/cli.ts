@@ -12,7 +12,7 @@ epicfail();
 const { version } = require(join('..', 'package.json'));
 
 async function transformMarkdown(filename: string, flags: any) {
-  const { define } = flags;
+  const { define, dryRun } = flags;
 
   // plugin discovery
   const pluginManager = await new PluginManager().discovery();
@@ -35,7 +35,7 @@ async function transformMarkdown(filename: string, flags: any) {
           // find and replace
           try {
             content = rule.match
-              ? content.replace(rule.match, rule.replace)
+                ? content.replace(rule.match, rule.replace)
               : rule.replace();
           } catch (err) {
             if (err instanceof ReferenceError) {
@@ -57,13 +57,20 @@ async function transformMarkdown(filename: string, flags: any) {
     },
   );
 
-  writeFileSync(filename, newMd);
+  if (dryRun) {
+    console.log(newMd);
+  } else {
+    writeFileSync(filename, newMd);
+  }
 }
 
 const cli = cac();
 cli
   .command('<filename>')
   .option('--define.* <value>', 'Define constants in replace function')
+  .option('--dry-run', 'Print result instead of overwriting input file', {
+    default: false,
+  })
   .action(transformMarkdown);
 cli.version(version);
 cli.help();
