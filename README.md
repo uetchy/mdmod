@@ -13,7 +13,6 @@
 
 <!-- START mdmod {use: 'toc'} -->
 
-
 - [mdmod](#mdmod)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
@@ -48,7 +47,9 @@ mdmod README.md --define.version v6.0.0
 
 ```md
 <!-- START mdmod {replace: () => version} -->
-v0.1.4-1-g5646570
+
+v0.2.0
+
 <!-- END mdmod -->
 ```
 
@@ -58,7 +59,7 @@ v0.1.4-1-g5646570
 ] -->
 
 curl https://path/to/releases/3.tar.gz
-tar -zxvf v0.1.4-1-g5646570-1-g5646570.tar.gz
+tar -zxvf v0.2.0.tar.gz
 
 <!-- END mdmod -->
 ```
@@ -73,7 +74,6 @@ mdmod README.md
 ```md
 <!-- START mdmod {use: 'toc'} -->
 
-
 - [mdmod](#mdmod)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
@@ -87,7 +87,6 @@ mdmod README.md
 <!-- END mdmod -->
 
 <!-- START mdmod {use: 'mdmod-plugin-toc'} -->
-
 
 - [mdmod](#mdmod)
   - [Table of Contents](#table-of-contents)
@@ -107,7 +106,7 @@ mdmod README.md
 ### Update version string in README.md
 
 ```bash
-npx mdmod README.md --define.version $(git describe --tags --match 'v*')
+npx mdmod README.md --define.version $(git describe --tags --match 'v*' --abbrev=0)
 ```
 
 README.md:
@@ -118,8 +117,8 @@ README.md:
 <!-- START mdmod {match: /v\d\.\d\.\d/g, replace: () => version} -->
 
 ```bash
-curl -LO https://github.com/uetchy/mdmod/archive/v0.1.4-1-g5646570-1-g5646570.zip
-unzip v0.1.4-1-g5646570-1-g5646570.zip
+curl -LO https://github.com/uetchy/mdmod/archive/v0.2.0.zip
+unzip v0.2.0.zip
 ```
 
 <!-- END mdmod -->
