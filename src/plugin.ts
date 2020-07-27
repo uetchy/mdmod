@@ -5,6 +5,7 @@ import findUp from 'find-up';
 import { readFileSync } from 'fs';
 import globby from 'globby';
 import { join } from 'path';
+import { log } from './util';
 
 export interface Handler {
   (
@@ -39,15 +40,18 @@ export class PluginManager {
   }
 
   async discovery() {
+    log('dirname', __dirname);
     const nodeModules = await findUp('node_modules', {
       type: 'directory',
       cwd: __dirname,
     });
+    log('nodeModules', nodeModules);
     if (!nodeModules) return this;
 
     const dirs = await globby(join(nodeModules, 'mdmod-plugin-*'), {
       onlyDirectories: true,
     });
+    log('dirs', 'dirs');
     const plugins = dirs.map<Plugin>((dir: string) => {
       const { name } = readPkg(join(dir, 'package.json'));
       return {
@@ -55,6 +59,7 @@ export class PluginManager {
         handler: require(dir),
       };
     });
+    log('plugins', plugins);
     this.plugins = plugins;
 
     return this;
