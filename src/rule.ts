@@ -2,7 +2,7 @@ import { NodeVM } from 'vm2';
 
 export interface Rule {
   match?: RegExp;
-  replace?: (args?: any) => string;
+  replace?: ((args?: any) => string) | string;
   use?: string;
 }
 

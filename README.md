@@ -46,7 +46,7 @@ mdmod README.md --define.version v6.0.0
 ```
 
 ```md
-<!-- START mdmod {replace: () => version} -->
+<!-- START mdmod {replace: version} -->
 
 v0.2.0
 
@@ -55,10 +55,10 @@ v0.2.0
 
 ```md
 <!-- START mdmod [
-  {match: /v\d\.\d\.\d/, replace: () => version}
+  {match: /v\d\.\d\.\d/g, replace: () => version}
 ] -->
 
-curl https://path/to/releases/3.tar.gz
+curl https://path/to/releases/v0.2.0.tar.gz
 tar -zxvf v0.2.0.tar.gz
 
 <!-- END mdmod -->
@@ -114,7 +114,7 @@ README.md:
 ````md
 # Download
 
-<!-- START mdmod {match: /v\d\.\d\.\d/g, replace: () => version} -->
+<!-- START mdmod {match: /v\d\.\d\.\d/g, replace: version} -->
 
 ```bash
 curl -LO https://github.com/uetchy/mdmod/archive/v0.2.0.zip

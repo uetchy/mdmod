@@ -34,9 +34,12 @@ async function transformMarkdown(filename: string, flags: any) {
         } else if (rule.replace) {
           // find and replace
           try {
-            content = rule.match
+            content =
+              rule.match && rule.replace
                 ? content.replace(rule.match, rule.replace)
-              : rule.replace();
+                : (typeof rule.replace === 'string'
+                    ? () => rule.replace
+                    : rule.replace)();
           } catch (err) {
             if (err instanceof ReferenceError) {
               fail(
