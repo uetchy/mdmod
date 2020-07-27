@@ -1,6 +1,6 @@
 {
   "name": "mdmod",
-  "description": "mdmod",
+  "description": "Universal Markdown replacer",
   "version": "0.0.0",
   "author": "Yasuaki Uechi <y@uechi.io> (https://uechi.io)",
   "scripts": {
@@ -47,7 +47,7 @@
     "in-place",
     "markdown",
     "mdmod",
-    "mod"
+    "replace"
   ],
   "license": "Apache-2.0"
 }

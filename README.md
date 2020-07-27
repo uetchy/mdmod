@@ -1,5 +1,5 @@
 <h1 align="center">mdmod</h1>
-<p align="center">mdmod</p>
+<p align="center">Universal Markdown replacer</p>
 
 [![npm-version]][npm-url]
 [![npm-downloads]][npm-url]
