@@ -2,6 +2,7 @@
 
 [![npm-version]][npm-url]
 [![npm-downloads]][npm-url]
+[![Actions Status: test](https://github.com/uetchy/mdmod/workflows/test/badge.svg)](https://github.com/uetchy/mdmod/actions?query=test)
 
 > In-place string replacement for Markdown
 
