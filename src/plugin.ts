@@ -7,15 +7,15 @@ export interface Handler {
   (
     params: {
       document: string;
-      all: string;
-      content: string;
-      constants: any;
+      fragment: string;
+      constants: { [index: string]: any };
+      cwd: string;
     },
     constants?: any,
-  ): string;
+  ): string | Promise<string>;
 }
 
-export type HandlerFactory = () => Handler;
+export type HandlerFactory = () => Handler | undefined;
 
 export interface Plugin {
   name: string;
@@ -71,7 +71,12 @@ export class PluginManager {
   }
 
   async discovery() {
-    const searchPaths = collectUp(__dirname, 'node_modules');
+    const searchPaths = [
+      ...new Set([
+        ...collectUp(__dirname, 'node_modules'),
+        ...collectUp(process.cwd(), 'node_modules'),
+      ]),
+    ];
     log('search', searchPaths);
     log('dirname', __dirname);
     if (searchPaths.length <= 0) {

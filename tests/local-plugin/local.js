@@ -1,5 +1,5 @@
 'use strict';
 exports.__esModule = true;
-exports['default'] = function () {
+exports['default'] = async function () {
   return 'Hello';
 };

@@ -1,4 +1,5 @@
 import { NodeVM } from 'vm2';
+import { fail } from 'epicfail';
 
 export interface Rule {
   match?: RegExp;
@@ -7,18 +8,32 @@ export interface Rule {
 }
 
 export function parseRules(ruleString: string, sandbox: object): Rule[] {
-  const vm = new NodeVM({
-    sandbox,
-    console: 'off',
-    eval: false,
-    require: true,
-    timeout: 2000,
-    wrapper: 'none',
-  });
-  let rules = vm.run('return ' + ruleString);
+  try {
+    const vm = new NodeVM({
+      sandbox,
+      console: 'off',
+      eval: false,
+      require: true,
+      timeout: 2000,
+      wrapper: 'none',
+    });
+    let rules = vm.run('return ' + ruleString);
 
-  if (!Array.isArray(rules)) {
-    rules = [rules];
+    // normalize to array
+    if (!Array.isArray(rules)) {
+      rules = [rules];
+    }
+
+    return rules;
+  } catch (err) {
+    if (err instanceof ReferenceError) {
+      fail(
+        err.message + '\n' + `Did you forget to add "--define.<key> <value>" ?`,
+        {
+          soft: true,
+        },
+      );
+    }
+    throw err;
   }
-  return rules;
 }

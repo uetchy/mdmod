@@ -1,5 +1,5 @@
-import debug from 'debug';
 import chalk from 'chalk';
+import debug from 'debug';
 
 export const log = debug('mdmod');
 

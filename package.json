@@ -18,6 +18,7 @@
     "debug": "^4.1.1",
     "epicfail": "^0.4.2",
     "globby": "^11.0.1",
+    "string-replace-async": "^2.0.0",
     "vm2": "^3.9.2"
   },
   "devDependencies": {

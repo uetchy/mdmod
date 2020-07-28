@@ -3,7 +3,8 @@
 import { cac } from 'cac';
 import epicfail, { fail } from 'epicfail';
 import { readFileSync, writeFileSync } from 'fs';
-import { join, dirname } from 'path';
+import { dirname, join } from 'path';
+import replaceAsync from 'string-replace-async';
 import { PluginManager } from './plugin';
 import { parseRules } from './rule';
 import { log, warning } from './util';
@@ -13,56 +14,56 @@ epicfail();
 const { version } = require(join('..', 'package.json'));
 
 async function transformMarkdown(filename: string, flags: any) {
-  const { define, dryRun } = flags;
+  const { define: constants, dryRun } = flags;
+  const cwd = dirname(filename);
 
   // plugin discovery
   const pluginManager = await new PluginManager().discovery();
 
-  const md = readFileSync(filename, 'utf8');
-  const newMd = md.replace(
+  const document = readFileSync(filename, 'utf8');
+  const newMd = await replaceAsync(
+    document,
     /<!-- START mdmod ([\w\W]+?) -->\n([\w\W]*?)\n?<!-- END mdmod -->\n/gm,
-    (all, ruleString, content) => {
-      const rules = parseRules(ruleString, define);
+    async (_, ruleString, fragment) => {
+      // parse rules
+      const rules = parseRules(ruleString, constants);
 
       // apply rules
       for (const rule of rules) {
         if (rule.use) {
-          // plugin
+          // call plugin
           const plugin = pluginManager.find(rule.use, {
-            cwd: dirname(filename),
+            cwd,
           });
           log('plugin', plugin);
           if (plugin) {
-            content = plugin({ document: md, all, content, constants: define });
+            fragment = await Promise.resolve(
+              plugin({
+                document,
+                fragment,
+                constants,
+                cwd,
+              }),
+            );
           } else {
             warning(`plugin "${rule.use}" cannot be found.`);
           }
         } else if (rule.replace) {
           // find and replace
-          try {
-            content =
-              rule.match && rule.replace
-                ? content.replace(rule.match, rule.replace)
-                : (typeof rule.replace === 'string'
-                    ? () => rule.replace
-                    : rule.replace)();
-          } catch (err) {
-            if (err instanceof ReferenceError) {
-              fail(
-                err.message +
-                  '\n' +
-                  `Did you forget to add "--define.<key> <value>" ?`,
-                {
-                  soft: true,
-                },
-              );
-            }
-            throw err;
+          const replacer =
+            typeof rule.replace === 'string'
+              ? () => rule.replace as string
+              : rule.replace;
+
+          if (rule.match) {
+            fragment = await replaceAsync(fragment, rule.match, replacer);
+          } else {
+            fragment = await Promise.resolve(replacer());
           }
         }
       }
 
-      return `<!-- START mdmod ${ruleString} -->\n${content}\n<!-- END mdmod -->\n`;
+      return `<!-- START mdmod ${ruleString} -->\n${fragment}\n<!-- END mdmod -->\n`;
     },
   );
 
