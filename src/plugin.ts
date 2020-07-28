@@ -15,9 +15,11 @@ export interface Handler {
   ): string;
 }
 
+export type HandlerFactory = () => Handler;
+
 export interface Plugin {
   name: string;
-  handler: () => Handler;
+  handler: HandlerFactory;
 }
 
 function readPkg(pkgPath: string): any {
@@ -45,6 +47,20 @@ function collectUp(dir: string, name: string) {
     const target = join(path, name);
     return existsSync(target) ? target : undefined;
   });
+}
+
+function makeHandlerFactory(dir: string): HandlerFactory {
+  return () => {
+    try {
+      const mod = require(dir);
+      return mod?.default ?? mod;
+    } catch (err) {
+      if (err.code !== 'MODULE_NOT_FOUND') {
+        throw err;
+      }
+      return undefined;
+    }
+  };
 }
 
 export class PluginManager {
@@ -75,7 +91,7 @@ export class PluginManager {
       const { name } = readPkg(join(dir, 'package.json'));
       return {
         name,
-        handler: () => require(dir),
+        handler: makeHandlerFactory(dir),
       };
     });
     this.plugins = plugins;
@@ -90,14 +106,7 @@ export class PluginManager {
   ): Handler | undefined {
     // relative
     if (name?.startsWith('.')) {
-      try {
-        return require(resolve(cwd, name));
-      } catch (err) {
-        if (err.code !== 'MODULE_NOT_FOUND') {
-          throw err;
-        }
-        return undefined;
-      }
+      return makeHandlerFactory(resolve(cwd, name))();
     }
 
     // node_modules
