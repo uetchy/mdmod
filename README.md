@@ -14,12 +14,14 @@
 
 <!-- START mdmod {use: 'toc'} -->
 
+
 - [mdmod](#mdmod)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Install](#install)
   - [Use](#use)
-    - [Replace strings](#replace-strings)
+  - [Configuration](#configuration)
+  - [Plugins](#plugins)
     - [Table of contents](#table-of-contents)
   - [Advanced Usage](#advanced-usage)
     - [Update version string in README.md](#update-version-string-in-readmemd)
@@ -40,17 +42,13 @@ npm i -g mdmod
 
 ## Use
 
-### Replace strings
-
 ```bash
 mdmod README.md --define.version v6.0.0
 ```
 
 ```md
 <!-- START mdmod {replace: version} -->
-
-v0.2.0
-
+v0.3.0
 <!-- END mdmod -->
 ```
 
@@ -59,11 +57,19 @@ v0.2.0
   {match: /v\d\.\d\.\d/g, replace: () => version}
 ] -->
 
-curl https://path/to/releases/v0.2.0.tar.gz
-tar -zxvf v0.2.0.tar.gz
+curl https://path/to/releases/v0.3.0.tar.gz
+tar -zxvf v0.3.0.tar.gz
 
 <!-- END mdmod -->
 ```
+
+## Configuration
+
+> Contribution wanted.
+
+## Plugins
+
+> Contribution wanted.
 
 ### Table of contents
 
@@ -75,26 +81,14 @@ mdmod README.md
 ```md
 <!-- START mdmod {use: 'toc'} -->
 
-- [mdmod](#mdmod)
-  - [Table of Contents](#table-of-contents)
-  - [Features](#features)
-  - [Install](#install)
-  - [Use](#use)
-    - [Replace strings](#replace-strings)
-    - [Table of contents](#table-of-contents)
-  - [Advanced Usage](#advanced-usage)
-    - [Update version string in README.md](#update-version-string-in-readmemd)
-
-<!-- END mdmod -->
-
-<!-- START mdmod {use: 'mdmod-plugin-toc'} -->
 
 - [mdmod](#mdmod)
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Install](#install)
   - [Use](#use)
-    - [Replace strings](#replace-strings)
+  - [Configuration](#configuration)
+  - [Plugins](#plugins)
     - [Table of contents](#table-of-contents)
   - [Advanced Usage](#advanced-usage)
     - [Update version string in README.md](#update-version-string-in-readmemd)
@@ -118,8 +112,8 @@ README.md:
 <!-- START mdmod {match: /v\d\.\d\.\d/g, replace: version} -->
 
 ```bash
-curl -LO https://github.com/uetchy/mdmod/archive/v0.2.0.zip
-unzip v0.2.0.zip
+curl -LO https://github.com/uetchy/mdmod/archive/v0.3.0.zip
+unzip v0.3.0.zip
 ```
 
 <!-- END mdmod -->
