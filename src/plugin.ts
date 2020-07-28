@@ -84,7 +84,23 @@ export class PluginManager {
     return this;
   }
 
-  find(name: string): Handler | undefined {
+  find(
+    name: string,
+    { cwd = process.cwd() }: { cwd?: string } = {},
+  ): Handler | undefined {
+    // relative
+    if (name?.startsWith('.')) {
+      try {
+        return require(resolve(cwd, name));
+      } catch (err) {
+        if (err.code !== 'MODULE_NOT_FOUND') {
+          throw err;
+        }
+        return undefined;
+      }
+    }
+
+    // node_modules
     return this.plugins
       .find(
         (plugin) => plugin.name === name || stripPrefix(plugin.name) === name,

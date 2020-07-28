@@ -1,13 +1,9 @@
-import execa from 'execa';
+/// <reference path="../jest.d.ts" />
 
-const { bin, version } = require('../package.json');
-
-async function run(...flags: string[]) {
-  const { stdout } = await execa(bin, flags);
-  return stdout;
-}
+const { version } = require('../package.json');
 
 it('version', async () => {
+  const run = createRunner(__dirname);
   const stdout = await run('--version');
   expect(stdout).toContain(version);
 });

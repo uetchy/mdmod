@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "cac": "^6.6.1",
+    "chalk": "^4.1.0",
     "debug": "^4.1.1",
     "epicfail": "^0.4.2",
     "globby": "^11.0.1",

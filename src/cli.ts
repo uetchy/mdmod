@@ -3,9 +3,10 @@
 import { cac } from 'cac';
 import epicfail, { fail } from 'epicfail';
 import { readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
 import { PluginManager } from './plugin';
 import { parseRules } from './rule';
+import { log, warning } from './util';
 
 epicfail();
 
@@ -27,9 +28,14 @@ async function transformMarkdown(filename: string, flags: any) {
       for (const rule of rules) {
         if (rule.use) {
           // plugin
-          const plugin = pluginManager.find(rule.use);
+          const plugin = pluginManager.find(rule.use, {
+            cwd: dirname(filename),
+          });
+          log('plugin', plugin);
           if (plugin) {
             content = plugin({ document: md, all, content, constants: define });
+          } else {
+            warning(`plugin "${rule.use}" cannot be found.`);
           }
         } else if (rule.replace) {
           // find and replace
