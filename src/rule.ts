@@ -1,5 +1,5 @@
-import { NodeVM } from 'vm2';
-import { fail } from 'epicfail';
+import { NodeVM } from "vm2";
+import { log } from "epicfail";
 
 export interface Rule {
   match?: RegExp;
@@ -11,13 +11,13 @@ export function parseRules(ruleString: string, sandbox: object): Rule[] {
   try {
     const vm = new NodeVM({
       sandbox,
-      console: 'off',
+      console: "off",
       eval: false,
       require: true,
       timeout: 2000,
-      wrapper: 'none',
+      wrapper: "none",
     });
-    let rules = vm.run('return ' + ruleString);
+    let rules = vm.run("return " + ruleString);
 
     // normalize to array
     if (!Array.isArray(rules)) {
@@ -27,11 +27,8 @@ export function parseRules(ruleString: string, sandbox: object): Rule[] {
     return rules;
   } catch (err) {
     if (err instanceof ReferenceError) {
-      fail(
-        err.message + '\n' + `Did you forget to add "--define.<key> <value>" ?`,
-        {
-          soft: true,
-        },
+      log(
+        err.message + "\n" + `Did you forget to add "--define.<key> <value>" ?`
       );
     }
     throw err;

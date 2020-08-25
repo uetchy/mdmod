@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
-import { cac } from 'cac';
-import epicfail, { fail } from 'epicfail';
-import { readFileSync, writeFileSync } from 'fs';
-import { dirname, join } from 'path';
-import replaceAsync from 'string-replace-async';
-import { PluginManager } from './plugin';
-import { parseRules } from './rule';
-import { log, warning } from './util';
+import { cac } from "cac";
+import epicfail, { log as epicLog } from "epicfail";
+import { readFileSync, writeFileSync } from "fs";
+import { dirname, join } from "path";
+import replaceAsync from "string-replace-async";
+import { PluginManager } from "./plugin";
+import { parseRules } from "./rule";
+import { log, warning } from "./util";
 
 epicfail();
 
-const { version } = require(join('..', 'package.json'));
+const { version } = require(join("..", "package.json"));
 
 async function transformMarkdown(filename: string, flags: any) {
   const { define: constants, dryRun } = flags;
@@ -20,7 +20,7 @@ async function transformMarkdown(filename: string, flags: any) {
   // plugin discovery
   const pluginManager = await new PluginManager().discovery();
 
-  const document = readFileSync(filename, 'utf8');
+  const document = readFileSync(filename, "utf8");
   const newMd = await replaceAsync(
     document,
     /<!-- START mdmod ([\w\W]+?) -->\n([\w\W]*?)\n?<!-- END mdmod -->\n/gm,
@@ -35,7 +35,7 @@ async function transformMarkdown(filename: string, flags: any) {
           const plugin = pluginManager.find(rule.use, {
             cwd,
           });
-          log('plugin', plugin);
+          log("plugin", plugin);
           if (plugin) {
             fragment = await Promise.resolve(
               plugin({
@@ -43,7 +43,7 @@ async function transformMarkdown(filename: string, flags: any) {
                 fragment,
                 constants,
                 cwd,
-              }),
+              })
             );
           } else {
             warning(`plugin "${rule.use}" cannot be found.`);
@@ -51,7 +51,7 @@ async function transformMarkdown(filename: string, flags: any) {
         } else if (rule.replace) {
           // find and replace
           const replacer =
-            typeof rule.replace === 'string'
+            typeof rule.replace === "string"
               ? () => rule.replace as string
               : rule.replace;
 
@@ -64,7 +64,7 @@ async function transformMarkdown(filename: string, flags: any) {
       }
 
       return `<!-- START mdmod ${ruleString} -->\n${fragment}\n<!-- END mdmod -->\n`;
-    },
+    }
   );
 
   if (dryRun) {
@@ -76,9 +76,9 @@ async function transformMarkdown(filename: string, flags: any) {
 
 const cli = cac();
 cli
-  .command('<filename>')
-  .option('--define.* <value>', 'Define constants in replace function')
-  .option('--dry-run', 'Print result instead of overwriting input file', {
+  .command("<filename>")
+  .option("--define.* <value>", "Define constants in replace function")
+  .option("--dry-run", "Print result instead of overwriting input file", {
     default: false,
   })
   .action(transformMarkdown);
@@ -88,8 +88,8 @@ cli.help();
 try {
   cli.parse();
 } catch (err) {
-  if (err.name === 'CACError') {
-    fail(err.message, { soft: true });
+  if (err.name === "CACError") {
+    epicLog(err.message);
   }
   throw err;
 }
