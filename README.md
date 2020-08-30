@@ -127,7 +127,20 @@ yarn add pkg1
 
 ## Advanced Usage
 
-### Update version string in README.md
+### Automated workflow with `husky` and `lint-staged`
+
+```json
+{
+  "husky": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.md": ["mdmod", "git add"]
+  }
+}
+```
+
+### Sync version text in README.md with the latest `git tag`
 
 ```bash
 npx mdmod README.md --define.version $(git describe --tags --match 'v*' --abbrev=0)
