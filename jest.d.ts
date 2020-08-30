@@ -1,4 +1,4 @@
 declare function createRunner(
-  basePath: string,
+  basePath: string
 ): (...flags: string[]) => Promise<string>;
 declare function strip(str: string): string;

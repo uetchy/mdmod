@@ -1,8 +1,8 @@
 /// <reference path="./jest.d.ts" />
 
-import execa from 'execa';
-import { resolve } from 'path';
-const { bin } = require('./package.json');
+import execa from "execa";
+import { resolve } from "path";
+const { bin } = require("./package.json");
 
 global.createRunner = (basePath: string) => async (...flags: string[]) => {
   const script = resolve(__dirname, bin);
@@ -13,5 +13,5 @@ global.createRunner = (basePath: string) => async (...flags: string[]) => {
 };
 
 global.strip = (str: string): string => {
-  return str.replace(/\n?<!--[\w\W]+?-->\n?/g, '');
+  return str.replace(/\n?<!--[\w\W]+?-->\n?/g, "");
 };

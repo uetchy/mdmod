@@ -12,6 +12,12 @@
     "prepublishOnly": "yarn clean && yarn build",
     "test": "yarn build && jest"
   },
+  "types": "lib/index.d.ts",
+  "main": "lib/index.js",
+  "bin": "lib/cli.js",
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "cac": "^6.6.1",
     "chalk": "^4.1.0",
@@ -34,12 +40,7 @@
     "tsup": "^3.6.1",
     "typescript": "^4.0.2"
   },
-  "types": "lib/index.d.ts",
-  "main": "lib/index.js",
-  "bin": "lib/cli.js",
-  "files": [
-    "lib"
-  ],
+  "homepage": "https://github.com/uetchy/mdmod",
   "repository": {
     "type": "git",
     "url": "https://github.com/uetchy/mdmod.git"
@@ -47,12 +48,11 @@
   "bugs": {
     "url": "https://github.com/uetchy/mdmod/issues"
   },
-  "homepage": "https://github.com/uetchy/mdmod",
+  "license": "Apache-2.0",
   "keywords": [
     "in-place",
     "markdown",
     "mdmod",
     "replace"
-  ],
-  "license": "Apache-2.0"
+  ]
 }

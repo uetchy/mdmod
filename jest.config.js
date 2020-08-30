@@ -1,7 +1,7 @@
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  testMatch: ['**/tests/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
-  testPathIgnorePatterns: ['lib'],
-  setupFiles: ['./jest.setup.ts'],
+  preset: "ts-jest",
+  testEnvironment: "node",
+  testMatch: ["**/tests/**/*.ts?(x)", "**/?(*.)+(spec|test).ts?(x)"],
+  testPathIgnorePatterns: ["lib"],
+  setupFiles: ["./jest.setup.ts"],
 };

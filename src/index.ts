@@ -1,2 +1,2 @@
-export { Handler, Plugin } from './plugin';
-export { parseRules, Rule } from './rule';
+export { Handler, Plugin } from "./plugin";
+export { parseRules, Rule } from "./rule";
