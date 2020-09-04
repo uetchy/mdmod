@@ -66,11 +66,15 @@ function makeHandlerFactory(dir: string): HandlerFactory {
 export class PluginManager {
   private plugins: Plugin[];
 
-  constructor() {
-    this.plugins = [];
+  private constructor(plugins: Plugin[]) {
+    this.plugins = plugins;
   }
 
-  async discovery() {
+  static async initialize() {
+    return new PluginManager(await PluginManager.lookup());
+  }
+
+  static async lookup(): Promise<Plugin[]> {
     const searchPaths = [
       ...new Set([
         ...collectUp(__dirname, "node_modules"),
@@ -80,7 +84,7 @@ export class PluginManager {
     log("search", searchPaths);
     log("dirname", __dirname);
     if (searchPaths.length <= 0) {
-      return this;
+      return [];
     }
 
     let pluginDirs: string[] = [];
@@ -99,10 +103,9 @@ export class PluginManager {
         handler: makeHandlerFactory(dir),
       };
     });
-    this.plugins = plugins;
     log("plugins", plugins);
 
-    return this;
+    return plugins;
   }
 
   find(
