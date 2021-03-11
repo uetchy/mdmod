@@ -15,7 +15,7 @@
 - [mdmod](#mdmod)
   - [Features](#features)
   - [Install](#install)
-  - [Use](#use)
+  - [Example Usage](#example-usage)
   - [Configuration](#configuration)
     - [MdmodOption](#mdmodoption)
     - [Start of block](#start-of-block)
@@ -117,13 +117,18 @@ npm i -g mdmod-plugin-toc
 mdmod README.md
 ```
 
-```md
-<!-- START mdmod {use: 'toc'} -->
+```
+ <!-- START mdmod {use: 'toc'} -->
+ <!-- END mdmod -->
+```
 
+would produce:
+
+```md
 - [mdmod](#mdmod)
   - [Features](#features)
   - [Install](#install)
-  - [Use](#use)
+  - [Example Usage](#example-usage)
   - [Configuration](#configuration)
     - [MdmodOption](#mdmodoption)
     - [Start of block](#start-of-block)
@@ -135,8 +140,6 @@ mdmod README.md
   - [Usage Tips](#usage-tips)
     - [Sync version text in README.md with the latest `git tag`](#sync-version-text-in-readmemd-with-the-latest-git-tag)
     - [Automated workflow with `husky` and `lint-staged`](#automated-workflow-with-husky-and-lint-staged)
-
-<!-- END mdmod -->
 ```
 
 ### Table of Packages ([`mdmod-plugin-top`](https://github.com/uetchy/mdmod-plugin-top))
@@ -148,9 +151,14 @@ npm i -g mdmod-plugin-top
 mdmod README.md
 ```
 
-````md
+```
  <!-- START mdmod {use: 'top'} -->
+ <!-- END mdmod -->
+```
 
+would produce:
+
+````md
 ### [pkg1](packages/pkg1)
 
 testPackage
@@ -164,8 +172,6 @@ npm install --save pkg1
 # or
 yarn add pkg1
 ```
-
- <!-- END mdmod -->
 ````
 
 ## Usage Tips
