@@ -12,7 +12,6 @@
 
 <!-- START mdmod {use: 'toc'} -->
 
-
 - [mdmod](#mdmod)
   - [Features](#features)
   - [Install](#install)
@@ -43,7 +42,7 @@ npm i -g mdmod
 # or `npm i mdmod` to install mdmod locally
 ```
 
-## Use
+## Example Usage
 
 Run `mdmod` with a variable named `version`:
 
@@ -55,7 +54,9 @@ Replace a block in between `<!-- START mdmod -->` and `<!-- END mdmod -->` with 
 
 ```md
 <!-- START mdmod {replace: version} -->
+
 v0.4.0
+
 <!-- END mdmod -->
 ```
 
@@ -86,7 +87,7 @@ tar -zxvf 0.4.0.tar.gz
 
 - **replace**: function or variable or string literal to replace with
 - **match** (optional): regular expression to match text. If null, replace whole text.
-- **use** (optional): specify plugin to use. If `use` is given, other options will be ignored.
+- **use** (optional): specify plugin to use. If `use` is given, other options will be ignored. If relative path is given (e.g. `use: "./scripts/contributors.js"`), use the specified script as a plugin.
 
 ### Start of block
 
@@ -107,7 +108,7 @@ Instead of using `--define.<key>=<value`, you can also define a variable with ex
 
 ## Official Plugins
 
-### Table of Contents (`mdmod-plugin-toc`)
+### Table of Contents ([`mdmod-plugin-toc`](https://github.com/uetchy/mdmod-plugin-toc))
 
 Generate a list of contents.
 
@@ -118,7 +119,6 @@ mdmod README.md
 
 ```md
 <!-- START mdmod {use: 'toc'} -->
-
 
 - [mdmod](#mdmod)
   - [Features](#features)
@@ -139,7 +139,7 @@ mdmod README.md
 <!-- END mdmod -->
 ```
 
-### Table of Packages (`mdmod-plugin-top`)
+### Table of Packages ([`mdmod-plugin-top`](https://github.com/uetchy/mdmod-plugin-top))
 
 Generate a list of monorepo packages (`/packages/*`).
 
