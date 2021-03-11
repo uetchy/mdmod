@@ -21,7 +21,7 @@ module.exports = function plugin({
   constants, // constants passed from `--define` or envvar
   cwd, // working directory (same directory as given Markdown file)
 }) {
-  return document;
+  return fragment;
 };
 ```
 
