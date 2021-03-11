@@ -73,6 +73,14 @@ async function transformMarkdown(filename: string, flags: any) {
   const { define: constants, dryRun } = flags;
   const cwd = dirname(filename);
 
+  // grab env var
+  for (const [k, v] of Object.entries(process.env)) {
+    if (!k.startsWith("MDMOD_")) continue;
+    console.log(k, v);
+    const key = k.replace(/^MDMOD_/, "").toLowerCase();
+    if (!(key in constants)) constants[key] = v;
+  }
+
   // plugin discovery
   const pluginManager = await PluginManager.initialize();
 
@@ -105,7 +113,7 @@ cli
     "--dry-run",
     "Print result to STDOUT instead of overwriting input file",
     {
-    default: false,
+      default: false,
     }
   )
   .action(transformMarkdown);

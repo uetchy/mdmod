@@ -12,6 +12,7 @@
 
 <!-- START mdmod {use: 'toc'} -->
 
+
 - [mdmod](#mdmod)
   - [Features](#features)
   - [Install](#install)
@@ -20,6 +21,7 @@
     - [MdmodOption](#mdmodoption)
     - [Start of block](#start-of-block)
     - [End of block](#end-of-block)
+    - [Environment variable](#environment-variable)
   - [Official Plugins](#official-plugins)
     - [Table of Contents (`mdmod-plugin-toc`)](#table-of-contents-mdmod-plugin-toc)
     - [Table of Packages (`mdmod-plugin-top`)](#table-of-packages-mdmod-plugin-top)
@@ -53,9 +55,7 @@ Replace a block in between `<!-- START mdmod -->` and `<!-- END mdmod -->` with 
 
 ```md
 <!-- START mdmod {replace: version} -->
-
 v0.4.0
-
 <!-- END mdmod -->
 ```
 
@@ -101,6 +101,10 @@ tar -zxvf 0.4.0.tar.gz
  <!-- END mdmod -->
 ```
 
+### Environment variable
+
+Instead of using `--define.<key>=<value`, you can also define a variable with exporting environment variable `MDMOD_<key>`. `<key>` is down cased and appended to the constants array in VM.
+
 ## Official Plugins
 
 ### Table of Contents (`mdmod-plugin-toc`)
@@ -115,6 +119,7 @@ mdmod README.md
 ```md
 <!-- START mdmod {use: 'toc'} -->
 
+
 - [mdmod](#mdmod)
   - [Features](#features)
   - [Install](#install)
@@ -123,6 +128,7 @@ mdmod README.md
     - [MdmodOption](#mdmodoption)
     - [Start of block](#start-of-block)
     - [End of block](#end-of-block)
+    - [Environment variable](#environment-variable)
   - [Official Plugins](#official-plugins)
     - [Table of Contents (`mdmod-plugin-toc`)](#table-of-contents-mdmod-plugin-toc)
     - [Table of Packages (`mdmod-plugin-top`)](#table-of-packages-mdmod-plugin-top)
