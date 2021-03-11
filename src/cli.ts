@@ -80,7 +80,7 @@ async function transformMarkdown(filename: string, flags: any) {
 
   const newMd = await replaceAsync(
     document,
-    /<!-- START mdmod ([\w\W]+?) -->\n([\w\W]*?)\n?<!-- END mdmod -->\n/gm,
+    /^<!-- START mdmod ([\w\W]+?) -->\n([\w\W]*?)\n?<!-- END mdmod -->\n/gm,
     replacerFactory({
       cwd,
       document,
@@ -100,9 +100,14 @@ const cli = cac();
 cli
   .command("<filename>")
   .option("--define.* <value>", "Define constants in replace function")
-  .option("--dry-run", "Print result instead of overwriting input file", {
+  .example("--define.version v3.0.0")
+  .option(
+    "--dry-run",
+    "Print result to STDOUT instead of overwriting input file",
+    {
     default: false,
-  })
+    }
+  )
   .action(transformMarkdown);
 cli.version(version);
 cli.help();
