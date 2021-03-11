@@ -67,8 +67,8 @@ Replace all matched text with content of a defined variable `version` with trail
   {match: /v\d\.\d\.\d/g, replace: () => version + "-p0"}
 ] -->
 
-curl https://path/to/releases/0.4.0.tar.gz
-tar -zxvf 0.4.0.tar.gz
+curl https://path/to/releases/v0.4.0-p0.tar.gz
+tar -zxvf v0.4.0-p0.tar.gz
 
 <!-- END mdmod -->
 ```
