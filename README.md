@@ -17,11 +17,15 @@
   - [Install](#install)
   - [Use](#use)
   - [Configuration](#configuration)
-  - [Plugins](#plugins)
-    - [Table of Contents](#table-of-contents)
-    - [Table of Packages](#table-of-packages)
-  - [Advanced Usage](#advanced-usage)
-    - [Update version string in README.md](#update-version-string-in-readmemd)
+    - [MdmodOption](#mdmodoption)
+    - [Start of block](#start-of-block)
+    - [End of block](#end-of-block)
+  - [Official Plugins](#official-plugins)
+    - [Table of Contents (`mdmod-plugin-toc`)](#table-of-contents-mdmod-plugin-toc)
+    - [Table of Packages (`mdmod-plugin-top`)](#table-of-packages-mdmod-plugin-top)
+  - [Usage Tips](#usage-tips)
+    - [Sync version text in README.md with the latest `git tag`](#sync-version-text-in-readmemd-with-the-latest-git-tag)
+    - [Automated workflow with `husky` and `lint-staged`](#automated-workflow-with-husky-and-lint-staged)
 
 <!-- END mdmod -->
 
@@ -39,9 +43,13 @@ npm i -g mdmod
 
 ## Use
 
+Run `mdmod` with a variable named `version`:
+
 ```bash
 mdmod README.md --define.version v6.0.0
 ```
+
+Replace a block in between `<!-- START mdmod -->` and `<!-- END mdmod -->` with content of a defined variable `version`:
 
 ```md
 <!-- START mdmod {replace: version} -->
@@ -51,26 +59,51 @@ v0.4.0
 <!-- END mdmod -->
 ```
 
+Replace all matched text with content of a defined variable `version` with trailing `-p0`:
+
 ```md
 <!-- START mdmod [
-  {match: /v\d\.\d\.\d/g, replace: () => version}
+  {match: /v\d\.\d\.\d/g, replace: () => version + "-p0"}
 ] -->
 
-curl https://path/to/releases/v0.4.0.tar.gz
-tar -zxvf v0.4.0.tar.gz
+curl https://path/to/releases/0.4.0.tar.gz
+tar -zxvf 0.4.0.tar.gz
 
 <!-- END mdmod -->
 ```
 
 ## Configuration
 
-> Contribution wanted.
+### MdmodOption
 
-## Plugins
+```ts
+{
+  replace: (() => string) | string,
+  match?: RegExp,
+  use?: string
+}
+```
 
-> Contribution wanted.
+- **replace**: function or variable or string literal to replace with
+- **match** (optional): regular expression to match text. If null, replace whole text.
+- **use** (optional): specify plugin to use. If `use` is given, other options will be ignored.
 
-### Table of Contents
+### Start of block
+
+```
+ <!-- START mdmod MdmodOption -->
+ <!-- START mdmod [MdmodOption, MdmodOption, ...] -->
+```
+
+### End of block
+
+```
+ <!-- END mdmod -->
+```
+
+## Official Plugins
+
+### Table of Contents (`mdmod-plugin-toc`)
 
 Generate a list of contents.
 
@@ -87,16 +120,20 @@ mdmod README.md
   - [Install](#install)
   - [Use](#use)
   - [Configuration](#configuration)
-  - [Plugins](#plugins)
-    - [Table of Contents](#table-of-contents)
-    - [Table of Packages](#table-of-packages)
-  - [Advanced Usage](#advanced-usage)
-    - [Update version string in README.md](#update-version-string-in-readmemd)
+    - [MdmodOption](#mdmodoption)
+    - [Start of block](#start-of-block)
+    - [End of block](#end-of-block)
+  - [Official Plugins](#official-plugins)
+    - [Table of Contents (`mdmod-plugin-toc`)](#table-of-contents-mdmod-plugin-toc)
+    - [Table of Packages (`mdmod-plugin-top`)](#table-of-packages-mdmod-plugin-top)
+  - [Usage Tips](#usage-tips)
+    - [Sync version text in README.md with the latest `git tag`](#sync-version-text-in-readmemd-with-the-latest-git-tag)
+    - [Automated workflow with `husky` and `lint-staged`](#automated-workflow-with-husky-and-lint-staged)
 
 <!-- END mdmod -->
 ```
 
-### Table of Packages
+### Table of Packages (`mdmod-plugin-top`)
 
 Generate a list of monorepo packages (`/packages/*`).
 
@@ -106,7 +143,7 @@ mdmod README.md
 ```
 
 ````md
-<!-- START mdmod {use: 'top'} -->
+ <!-- START mdmod {use: 'top'} -->
 
 ### [pkg1](packages/pkg1)
 
@@ -122,23 +159,10 @@ npm install --save pkg1
 yarn add pkg1
 ```
 
-<!-- END mdmod -->
+ <!-- END mdmod -->
 ````
 
-## Advanced Usage
-
-### Automated workflow with `husky` and `lint-staged`
-
-```json
-{
-  "husky": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.md": ["mdmod", "git add"]
-  }
-}
-```
+## Usage Tips
 
 ### Sync version text in README.md with the latest `git tag`
 
@@ -146,7 +170,7 @@ yarn add pkg1
 npx mdmod README.md --define.version $(git describe --tags --match 'v*' --abbrev=0)
 ```
 
-README.md:
+`README.md`:
 
 ````md
 # Download
@@ -160,3 +184,16 @@ unzip v0.4.0.zip
 
 <!-- END mdmod -->
 ````
+
+### Automated workflow with `husky` and `lint-staged`
+
+```json
+{
+  "husky": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.md": ["mdmod"]
+  }
+}
+```
