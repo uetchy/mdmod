@@ -107,7 +107,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for more information on how to write a pl
 
 ### Environment variable
 
-Instead of using `--define.<key>=<value>`, you can also define a variable with exporting environment variable `MDMOD_<key>`. `<key>` is down cased and appended to the constants array in VM.
+Instead of using `--define.<key>=<value>`, you can also define a variable with exporting environment variable `MDMOD_<key>`. `<key>` will be lowercased and added to the VM's constant dictionary.
 
 ## Official Plugins
 
