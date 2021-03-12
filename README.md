@@ -8,7 +8,7 @@
 [npm-downloads]: https://badgen.net/npm/dt/mdmod
 [npm-url]: https://npmjs.org/package/mdmod
 
-> In-place string replacement for Markdown
+> Powerful & extensible Markdown editor for automated workflow.
 
 <!-- START mdmod {use: 'toc'} -->
 
@@ -32,8 +32,8 @@
 
 ## Features
 
-- In-place string replacement.
-- [Plugins](#plugins) to extend feature.
+- Programmatically edit portion of Markdown document
+- [Plugins](#official-plugins) to extend feature
 
 ## Install
 
