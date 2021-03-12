@@ -8,8 +8,9 @@ export interface Handler {
     params: {
       document: string;
       fragment: string;
-      constants: { [index: string]: any };
+      constants: { [index: string]: unknown };
       cwd: string;
+      args: { [index: string]: unknown };
     },
     constants?: any
   ): string | Promise<string>;

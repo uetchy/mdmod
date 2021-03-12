@@ -33,8 +33,12 @@ function replacerFactory({
     // apply rules
     for (const rule of rules) {
       if (rule.use) {
+        const [pluginLocator, pluginArgs] = Array.isArray(rule.use)
+          ? rule.use
+          : [rule.use, {}];
+
         // call plugin
-        const plugin = pluginManager.find(rule.use, {
+        const plugin = pluginManager.find(pluginLocator, {
           cwd,
         });
         log("plugin", plugin);
@@ -45,10 +49,11 @@ function replacerFactory({
               fragment,
               constants,
               cwd,
+              args: pluginArgs,
             })
           );
         } else {
-          warning(`plugin "${rule.use}" cannot be found.`);
+          warning(`plugin "${pluginLocator}" cannot be found.`);
         }
       } else if (rule.replace) {
         // find and replace

@@ -82,13 +82,13 @@ tar -zxvf v0.4.0-p0.tar.gz
 {
   replace: (() => string) | string,
   match?: RegExp,
-  use?: string
+  use?: string | [string, string]
 }
 ```
 
 - **replace**: function or variable or string literal to replace with
 - **match** (optional): regular expression to match text. Without `match`, mdmod will replace whole text.
-- **use** (optional): specify plugin to use. If `use` property is given, other options will be ignored. If relative path is given (e.g. `use: "./scripts/contributors.js"`), use the specified script as a plugin.
+- **use** (optional): specify plugin to use. If `use` property is given, other options will be ignored. If relative path is given (e.g. `use: "./scripts/contributors.js"`), use the specified script as a plugin. You can pass args to a plugin like this: `use: ["somePlugin", {foo: "bar"}]`
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for more information on how to write a plugin.
 
