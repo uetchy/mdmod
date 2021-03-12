@@ -40,6 +40,7 @@
 ```bash
 npm i -g mdmod
 # or `npm i mdmod` to install mdmod locally
+# or just `npx mdmod` to use without installing package
 ```
 
 ## Example Usage
@@ -86,8 +87,10 @@ tar -zxvf v0.4.0-p0.tar.gz
 ```
 
 - **replace**: function or variable or string literal to replace with
-- **match** (optional): regular expression to match text. If null, replace whole text.
-- **use** (optional): specify plugin to use. If `use` is given, other options will be ignored. If relative path is given (e.g. `use: "./scripts/contributors.js"`), use the specified script as a plugin.
+- **match** (optional): regular expression to match text. Without `match`, mdmod will replace whole text.
+- **use** (optional): specify plugin to use. If `use` property is given, other options will be ignored. If relative path is given (e.g. `use: "./scripts/contributors.js"`), use the specified script as a plugin.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for more information on how to write a plugin.
 
 ### Start of block
 
