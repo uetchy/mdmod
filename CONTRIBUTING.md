@@ -7,6 +7,7 @@
 ```bash
 git clone https://github.com/uetchy/mdmod.git && cd mdmod
 yarn install
+yarn husky install
 yarn build
 ```
 
