@@ -227,3 +227,7 @@ unzip v0.4.0.zip
 List of awesome projects that use mdmod.
 
 - [Tencent/cloudbase-framework](https://github.com/Tencent/cloudbase-framework)
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information.
