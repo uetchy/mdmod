@@ -4,16 +4,13 @@ import { join, resolve, sep } from "path";
 import { log } from "./util";
 
 export interface Handler {
-  (
-    params: {
-      document: string;
-      fragment: string;
-      constants: { [index: string]: unknown };
-      cwd: string;
-      args: { [index: string]: unknown };
-    },
-    constants?: any
-  ): string | Promise<string>;
+  (params: {
+    document: string;
+    fragment: string;
+    constants: { [index: string]: unknown };
+    cwd: string;
+    args: { [index: string]: unknown };
+  }): string | Promise<string>;
 }
 
 export type HandlerFactory = () => Handler | undefined;

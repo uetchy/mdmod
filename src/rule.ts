@@ -4,7 +4,7 @@ import { logAndExit } from "epicfail";
 export interface Rule {
   match?: RegExp;
   replace?: ((args?: any) => string) | string;
-  use?: string;
+  use?: string | [string, any];
 }
 
 export function parseRules(ruleString: string, sandbox: object): Rule[] {
