@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { cac } from "cac";
-import epicfail, { log as epicLog } from "epicfail";
+import { epicfail } from "epicfail";
 import { readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import replaceAsync from "string-replace-async";
@@ -9,7 +9,7 @@ import { PluginManager } from "./plugin";
 import { parseRules } from "./rule";
 import { log, warning } from "./util";
 
-epicfail({
+epicfail(__dirname, {
   assertExpected: (err) => err.name === "CACError",
 });
 
@@ -75,7 +75,7 @@ function replacerFactory({
 }
 
 async function transformMarkdown(filename: string, flags: any) {
-  const { define: constants, dryRun } = flags;
+  const { define: constants = {}, dryRun } = flags;
   const cwd = dirname(filename);
 
   // grab env var

@@ -56,7 +56,7 @@ function makeHandlerFactory(dir: string): HandlerFactory {
       const mod = require(dir);
       return mod?.default ?? mod;
     } catch (err) {
-      if (err.code !== "MODULE_NOT_FOUND") {
+      if ((err as any)?.code !== "MODULE_NOT_FOUND") {
         throw err;
       }
       return undefined;

@@ -1,5 +1,5 @@
 import { NodeVM } from "vm2";
-import { log } from "epicfail";
+import { logAndExit } from "epicfail";
 
 export interface Rule {
   match?: RegExp;
@@ -27,7 +27,7 @@ export function parseRules(ruleString: string, sandbox: object): Rule[] {
     return rules;
   } catch (err) {
     if (err instanceof ReferenceError) {
-      log(
+      logAndExit(
         err.message + "\n" + `Did you forget to add "--define.<key> <value>" ?`
       );
     }
